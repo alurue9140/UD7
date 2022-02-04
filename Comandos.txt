@@ -1,1 +1,73 @@
+Comandos:
 
+UO
+
+#Crear uo
+samba-tool ou create 'OU=Informatica,DC=smr,DC=local' --description='Departamento de Informática'
+#Eliminar uo
+samba-tool ou delete 'OU=Depcomercio
+
+GRUPOS
+
+#Global para usuarios
+samba-tool group add GG-Departamento --group-type=Security --group-scope=Global
+#Local para permisos
+samba-tool group add GL-Departamento --group-type=Security --group-scope=domain
+#Añadir grupos a uos
+samba-tool group add GG-DepInformatica --groupou='ou=Informatica'
+#Lista grupos del dominio
+samba-tool group list
+#Eliminar grupos
+samba-tool group delete GG-Departamento
+#Listar miembros del grupo
+samba-tool group listmembers GG-DepInformatica
+#Añadir usuarios a grupos
+samba-tool group addmembers GG-DepInformatica Inf02,Inf03
+#Eliminar usuarios de un grupo
+samba-tool group removemembers GG-DepInformatica Inf03
+
+USUARIOS
+
+#Crear Usuarios
+samba-tool user create Log01 logiPassword7 --must-change-at-next-login
+--userou='ou=Logistica' --home-directory=/home/Log01 --given-name="Juan Carlos"
+--surname="Requena" --mail=log01@smr.local --department="Logística" --login-shell=/bin/bash
+#Listar usuarios
+samba-tool user list
+#Restablecer usuario
+samba-tool user delete userTest
+#Restablecer Contraseña
+samba-tool user setpassword userTest
+#Restablecer Contraseña y que la asigne el usuario en el próximo login
+samba-tool user setpassword userTest --newpassword='Passw0rd' --must-change-at-next-login
+#Habilitar o deshabilitar cuenta
+samba-tool user disable userTest
+samba-tool user enable userTest
+
+
+EQUIPOS
+
+#Crear
+samba-tool computer create UD-Inf-02
+#Editar
+samba-tool computer edit –editor nano UD-Inf-02
+#Eliminar
+samba-tool computer delete UD-Inf-02
+#Consultar 
+samba-tooluser computer show UD-Inf-02
+#Listar
+samba-tooluser computer list
+
+
+Políticas de contraseña
+
+#Para ver cuales son las opciones seleccionadas
+samba-tool domain passwordsettings show
+#Para quitar la complejidad
+samba-tool domain passwordsettings set --complexity=off
+#Para que las recuerde o no 
+samba-tool domain passwordsettings set --history-length=0
+#Cada cuánto puedes cambiar la contraseña (voluntariamente)
+samba-tool domain passwordsettings set --min-pwd-age=0
+#Cada cuanto tiempo puedes para que tengas que cambiar la contraseña
+samba-tool domain passwordsettings set --max-pwd-age=0
